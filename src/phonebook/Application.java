@@ -1,15 +1,16 @@
 package phonebook;
 
 import phonebook.dao.PhonebookDAO;
+import phonebook.exception.InputDataTypeException;
+import phonebook.exception.InvalidMenuValueException;
+import phonebook.exception.NegativeValueException;
 import phonebook.mapper.InputMapper;
-import phonebook.storage.DatabaseStorage;
 import phonebook.storage.FileStorage;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 public class Application {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NegativeValueException, InputDataTypeException, InvalidMenuValueException {
         var action = args[0];
         //var dao = new PhonebookDAO(Arrays.asList(new FileStorage(), new DatabaseStorage()));
         var dao = new PhonebookDAO(Collections.singletonList(new FileStorage()));
@@ -30,6 +31,9 @@ public class Application {
             }
             case "delete" -> {
                 dao.delete(Integer.parseInt(args[1]));
+            }
+            case "edit" -> {
+                dao.edit(Integer.parseInt(args[1]));
             }
             case "find" -> {
                 var person = dao.find(Integer.parseInt(args[1]));

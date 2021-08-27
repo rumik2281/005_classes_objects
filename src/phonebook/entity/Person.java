@@ -16,6 +16,7 @@ public class Person {
         this.firstname = columns[1];
         this.lastname = columns[2];
         this.age = Integer.parseInt(columns[3]);
+        this.phoneNumber = columns[4];
     }
 
     public Integer getId() {

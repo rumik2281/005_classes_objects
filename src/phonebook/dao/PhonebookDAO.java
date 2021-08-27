@@ -1,6 +1,11 @@
 package phonebook.dao;
 
+import phonebook.data.DataAcquirer;
 import phonebook.entity.Person;
+import phonebook.exception.InputDataTypeException;
+import phonebook.exception.InvalidMenuValueException;
+import phonebook.exception.NegativeValueException;
+import phonebook.mapper.InputMapper;
 import phonebook.storage.Storage;
 
 import java.io.File;
@@ -42,7 +47,7 @@ public class PhonebookDAO {
 
         for (int i = 0; i < people.length; i++) {
             if (people[i] != null) {
-               this.save(people[i]);
+                this.save(people[i]);
             }
         }
     }
@@ -94,6 +99,23 @@ public class PhonebookDAO {
         for (int i = 0; i < people.length; i++) {
             if (people[i].getId().equals(id)) {
                 people[i] = null;
+            }
+        }
+        this.saveAll(people);
+    }
+
+    public void edit(int id) throws NegativeValueException, InputDataTypeException, InvalidMenuValueException {
+        Person[] people = this.getAll();
+        var dataAcquirer = new DataAcquirer();
+        for (int i = 0; i < people.length; i++) {
+            if (people[i].getId().equals(id)) {
+                int choice = dataAcquirer.getChoice();
+                switch (choice) {
+                    case 1 -> people[i].setFirstname(dataAcquirer.getString());
+                    case 2 -> people[i].setLastname(dataAcquirer.getString());
+                    case 3 -> people[i].setAge(dataAcquirer.getIntegerNumber());
+                    case 4 -> people[i].setPhoneNumber(String.valueOf(dataAcquirer.getIntegerNumber()));
+                }
             }
         }
         this.saveAll(people);
